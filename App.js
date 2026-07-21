@@ -8,6 +8,7 @@ import { StyleSheet, Text, View } from "react-native";
 import AvatarUser from "./components/AvatarUser";
 import GridContent from "./components/GridContent";
 import Prayers from "./components/Prayers";
+import ActionSheetForm from "./components/ActionSheetForm";
 
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "@/global.css";
@@ -18,12 +19,18 @@ import { HStack } from "./components/ui/hstack";
 import MenuOptions from "./components/Menu";
 
 
+function RenderPortal () {
+  const {portal, setPortal} = useContext(AppContext)
+ 
+  return (
+    <ActionSheetForm portal={portal} setPortal={setPortal}/>
+  )
+}
 
 
 export default function App() {
   return (
     <AppProvider>
-
       <GluestackUIProvider mode="dark">
         <View style={styles.container}>
           <HStack
@@ -34,7 +41,7 @@ export default function App() {
             items-center 
             justify-between
             px-5
-        "
+            "
           >
             <AvatarUser />
             <MenuOptions />
@@ -47,6 +54,7 @@ export default function App() {
           </HStack>
           <StatusBar style="auto" />
         </View>
+      <RenderPortal/> 
       </GluestackUIProvider>
     </AppProvider>
   );
