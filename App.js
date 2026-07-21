@@ -1,14 +1,15 @@
-import React, { useState, useContext } from "react";
-import { AppContext } from "./context/contex";
-import AppProvider from "./context/contex";
+import { useContext, useState } from "react";
+
+import AppProvider, { AppContext } from "./context/contex";
 
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
 import AvatarUser from "./components/AvatarUser";
 import GridContent from "./components/GridContent";
+
 import Prayers from "./components/Prayers";
-import ActionSheetForm from "./components/ActionSheetForm";
+import ModalPrayer from "./components/ModalPrayer";
 
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "@/global.css";
@@ -19,14 +20,13 @@ import { HStack } from "./components/ui/hstack";
 import MenuOptions from "./components/Menu";
 
 
-function RenderPortal () {
-  const {portal, setPortal} = useContext(AppContext)
- 
+const RenderModal = () => {
+  const {portal} = useContext(AppContext)
   return (
-    <ActionSheetForm portal={portal} setPortal={setPortal}/>
-  )
-}
+    portal && <ModalPrayer/>
+    )
 
+}
 
 export default function App() {
   return (
@@ -47,14 +47,12 @@ export default function App() {
             <MenuOptions />
           </HStack>
           <HStack>
-            <GridContent/>
+            <GridContent />
           </HStack>
-          <HStack className="h-30 flex-1 py-2">
-            <Prayers/>
-          </HStack>
+            <Prayers />
           <StatusBar style="auto" />
         </View>
-      <RenderPortal/> 
+        <RenderModal/>
       </GluestackUIProvider>
     </AppProvider>
   );
