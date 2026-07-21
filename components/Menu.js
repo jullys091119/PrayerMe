@@ -7,19 +7,17 @@ import {
   MenuItemLabel,
   MenuSeparator,
 } from '../components/ui/menu';
-import { Button, ButtonText } from '@/components/ui/button';
+import { Button} from '@/components/ui/button';
 import {
   Icon,
   SettingsIcon,
-  HelpCircleIcon,
-  MessageCircleIcon,
 } from '../components/ui/icon';
 import {MenuIcon} from "lucide-react-native"
 
 function MenuOptions() {
   const [selected, setSelected] = React.useState(new Set([]));
-    const  { theme } = useContext(AppContext);
-    console.log(theme, "theme")
+    const  { setPortal } = useContext(AppContext);
+   
   return (
     <Menu
       placement="bottom left"
@@ -40,6 +38,7 @@ function MenuOptions() {
       }}
     >
       <MenuItem
+        onPress={()=>{setPortal(true)}}
         key="Account Settings"
         textValue="Account Settings"
         className="p-2 web:min-w-[294px] min-w-[225px]"
