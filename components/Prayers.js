@@ -6,6 +6,7 @@ import { VStack } from "./ui/vstack";
 import { HStack } from "./ui/hstack";
 import { Card } from "./ui/card";
 import { Heading } from "./ui/heading";
+import { Switch } from "./ui/switch";
 
 function Prayers() {
   const { prayer } = useContext(AppContext);
@@ -27,7 +28,20 @@ function Prayers() {
                 </Text>
                 <Icon size={20} color={item.color} className="mt-2" />
               </HStack>
-              <Text className="text-white">{item.prayer}</Text>
+              <HStack className="border-1">
+                <Text className="text-white  max-w-[300]">{item.prayer}</Text>
+                <Switch
+                  size="md"
+                  isDisabled={false}
+                  trackColor={{ false: "#d4d4d4", true: `${item.color}` }}
+                  thumbColor="#fafafa"
+                  activeThumbColor="#fafafa"
+                  ios_backgroundColor="#d4d4d4"
+                
+                  
+                />
+
+              </HStack>
             </Card>
           );
         }}
