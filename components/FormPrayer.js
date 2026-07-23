@@ -14,7 +14,6 @@ import { Textarea, TextareaInput } from "../components/ui/textarea";
 
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import { getDataSql } from "@/sql";
 
 function FormPrayer({ feeling, icon, color, iconName }) {
   const { setPrayer, setPrayerSql, prayer, insertDataSql } =

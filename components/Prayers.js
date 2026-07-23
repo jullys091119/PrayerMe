@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "@/context/contex";
 import { VirtualizedList, Text } from "react-native";
 
@@ -10,17 +10,19 @@ import { Switch } from "./ui/switch";
 import { Icon } from "./ui/icon";
 
 function Prayers() {
-  const { prayer, setPrayer, data, icons } = useContext(AppContext);
-  const [answered, setAnswered] = useState(false);
+  const { setAnsweredSql, data, icons, getDataSql, setData } =
+   useContext(AppContext);
+   const handleSetAnswered = async (answered, id) => {
+   await setAnsweredSql(id, answered);
+   await loadData()
+};
 
-  const handleSetAnswered = (answered, id) => {
-    setAnswered(answered);
-    setPrayer((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, answered } : r)),
-    );
+
+  const loadData = async () => {
+    const newData = await getDataSql();
+    setData(newData);
+    console.log(newData, "daa");
   };
-
-  console.log(data, "data,dsfsñdksss");
 
   return (
     <VStack className="px-5 flex-1 flex py-5 my-10">
@@ -30,15 +32,16 @@ function Prayers() {
         keyExtractor={(item) => item.id.toString()}
         getItem={(data, index) => data[index]}
         getItemCount={(data) => data?.length}
-        renderItem={({ item, i }) => {
+        renderItem={({ item }) => {
           const IconComponent = icons[item.iconName];
 
           return (
             <Card className="w-full text-white h-auto my-2">
-              <HStack className="gap-2">
+              <HStack className="gap-2 flex items-center">
                 <Text className="text-white flex items-center">
-                  Me siento: {item.feeling}{" "}
+                  Me siento: {item.feeling}
                 </Text>
+
                 <Icon
                   as={IconComponent}
                   size={20}
@@ -46,18 +49,28 @@ function Prayers() {
                   className="mt-2"
                 />
               </HStack>
+
               <HStack className="border-1">
-                <Text className="text-white  max-w-[300]">{item.prayer}</Text>
+                <Text className="text-white max-w-[300]">
+                  {item.prayer}
+                </Text>
+
                 <Switch
                   size="md"
                   isDisabled={false}
-                  trackColor={{ false: "#d4d4d4", true: `${item.color}` }}
+                  trackColor={{
+                    false: "#d4d4d4",
+                    true: `${item.color}`,
+                  }}
                   thumbColor="#fafafa"
                   activeThumbColor="#fafafa"
                   ios_backgroundColor="#d4d4d4"
-                  value={answered}
+                  value={item.answered === 1}
                   onToggle={() => {
-                    handleSetAnswered(!item.answered, item.id);
+                    handleSetAnswered(
+                      item.answered === 1 ? 0 : 1,
+                      item.id
+                    );
                   }}
                 />
               </HStack>

@@ -30,7 +30,7 @@ async function insertDataSql(data) {
         VALUES (?, ?, ?, ?, ?, ?, ?)
         `,
         item.id,
-        item.answered ? 1 : 0,
+        item.answered ? true : false,
         item.color ?? null,
         item.feeling,
         item.name ?? item.feeling,
@@ -50,13 +50,29 @@ async function getDataSql() {
     const rows = await db.getAllAsync(`
       SELECT * FROM prayers
     `);
-
-    console.log(rows, "SELECT");
-
     return rows;
   } catch (error) {
     console.log(error, "Error leyendo datos");
   }
 }
 
-export { setPrayerSql, insertDataSql, getDataSql };
+
+async function setAnsweredSql(id, bool) {
+  try {
+    const res = await db.runAsync(
+      'UPDATE prayers SET answered = ? WHERE id = ?',
+      [bool ? 1 : 0, id]
+    );
+
+    console.log('Filas actualizadas:', res.changes);
+
+    const data = await getDataSql();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+
+export { setPrayerSql, insertDataSql, getDataSql, setAnsweredSql };

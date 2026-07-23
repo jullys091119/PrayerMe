@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import { setPrayerSql, insertDataSql, getDataSql } from "@/sql";
+import { setPrayerSql, insertDataSql, getDataSql, setAnsweredSql } from "@/sql";
 
 import {
   Smile,
@@ -118,19 +118,25 @@ const AppProvider = ({ children }) => {
 
   const [portal, setPortal] = useState(false);
   const [prayer, setPrayer] = useState(currentPrayer);
-  const [data, setData] = useState([])
-  
-async function getDataAsyncSql() {
-  await setPrayerSql();
+  const [data, setData] = useState([]);
 
-  const data = await getDataSql();
-  setData(data)
-}
+  async function getDataAsyncSql() {
+    console.log("iniciando carga");
 
-useEffect(() => {
-  getDataAsyncSql();
-}, []);
+    await setPrayerSql();
 
+    console.log("después de setPrayerSql");
+
+    const data = await getDataSql();
+
+    console.log("datos cargados:", data);
+
+    setData(data);
+  }
+
+  useEffect(() => {
+    getDataAsyncSql();
+  }, []);
   return (
     <AppContext.Provider
       value={{
@@ -138,12 +144,14 @@ useEffect(() => {
         setPortal,
         portal,
         prayer,
-        setPrayer,
         feelings,
         icons,
         setPrayerSql,
         insertDataSql,
-        data
+        setAnsweredSql,
+        getDataSql,
+        data,
+        setData,
       }}
     >
       {children}
