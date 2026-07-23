@@ -19,11 +19,13 @@ function ModalPrayer() {
   const [feeling, setFeeling] = React.useState("");
   const [icon, setIcon] = React.useState(null);
   const [color, setColor] = React.useState(null);
+  const [iconName, setIconName] = React.useState("")
   const [showSelector, setShowSelector] = React.useState(false);
 
-  const { portal, setPortal, feelings } = useContext(AppContext);
+  const { portal, setPortal, feelings} = useContext(AppContext);
 
-  const handleFeeling = (name, icon, color) => {
+  const handleFeeling = (name, icon, color, iconName) => {
+    setIconName(iconName)
     setFeeling(name);
     setIcon(icon);
     setColor(color);
@@ -59,7 +61,7 @@ function ModalPrayer() {
                 <Icon as={ChevronDownIcon} />
               </TouchableOpacity>
 
-              <FormPrayer feeling={feeling} icon={icon} color={color} />
+              <FormPrayer feeling={feeling} icon={icon} color={color} iconName={iconName} />
             </ScrollView>
           </ModalBody>
         </ModalContent>
@@ -84,7 +86,7 @@ function ModalPrayer() {
               <HStack key={item.id} className="wrapperIcon">
                 <TouchableOpacity
                   className="flex-row items-center gap-2 bg-muted p-4 rounded-md h-14"
-                  onPress={() => handleFeeling(item.name, item.icon, item.color)}
+                  onPress={() => handleFeeling(item.name, item.icon, item.color, item.iconName)}
                 >
                   <Icon as={item.icon} color={item.color} size={20} />
                   <Text>{item.name}</Text>
