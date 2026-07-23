@@ -14,28 +14,34 @@ import { Textarea, TextareaInput } from "../components/ui/textarea";
 
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
+import { getDataSql } from "@/sql";
 
-function FormPrayer({ feeling, icon, color }) {
-  const { setPrayer } = useContext(AppContext);
+function FormPrayer({ feeling, icon, color, iconName }) {
+  const { setPrayer, setPrayerSql, prayer, insertDataSql } =
+    useContext(AppContext);
 
   const [newPrayer, setNewPrayer] = useState("");
 
-  const handleSavePrayer = () => {
+  const handleSavePrayer = async () => {
     const id = uuidv4();
 
-    setPrayer((prev) => [
-      ...prev,
-      {
-        id,
-        prayer: newPrayer,
-        answered: false,
-        feeling,
-        icon,
-        color,
-      },
-    ]);
+    const newItem = {
+      id,
+      prayer: newPrayer,
+      answered: false,
+      feeling,
+      icon,
+      color,
+      iconName,
+    };
+
+    setPrayer((prev) => [...prev, newItem]);
+
+    await setPrayerSql();
 
     setNewPrayer("");
+
+    await insertDataSql([newItem]);
   };
 
   return (
