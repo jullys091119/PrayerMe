@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import { setPrayerSql, insertDataSql, getDataSql, setAnsweredSql } from "@/sql";
+import { setPrayerSql, insertDataSql, getDataSql, setAnsweredSql, deletePrayerSql, filterPerAnswered  } from "@/sql";
 
 import {
   Smile,
@@ -136,6 +136,12 @@ const AppProvider = ({ children }) => {
   }
 
 
+  async function getDataFilteredSql (answered) {
+    const data   =  await  filterPerAnswered(answered);
+    return data;
+   //
+  }
+
   function  setDatePrayer () {
    const date  =  new Date()
    const  currentDate = date.getFullYear();
@@ -184,7 +190,10 @@ const AppProvider = ({ children }) => {
         data,
         setData,
         setDate,
-        date
+        date,
+        deletePrayerSql,
+        filterPerAnswered,
+        getDataFilteredSql,
       }}
     >
       {children}

@@ -16,6 +16,7 @@ import {
 import { Modal, ModalBackdrop, ModalContent, ModalHeader, ModalCloseButton, ModalBody } from "./ui/modal";
 
 function ModalPrayer() {
+  
   const [feeling, setFeeling] = React.useState("");
   const [icon, setIcon] = React.useState(null);
   const [color, setColor] = React.useState(null);
