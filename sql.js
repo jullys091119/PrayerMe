@@ -17,7 +17,7 @@ async function setPrayerSql() {
     date TEXT
   );
 `);
-/*   await db.execAsync(`
+  /*   await db.execAsync(`
   ALTER TABLE prayers
   ADD COLUMN date TEXT;
 `); */
@@ -78,4 +78,38 @@ async function setAnsweredSql(id, bool) {
   }
 }
 
-export { setPrayerSql, insertDataSql, getDataSql, setAnsweredSql };
+async function deletePrayerSql(id) {
+  try {
+    await db.runAsync(
+      `DELETE FROM prayers WHERE id = ?`,
+      [id], // the message you want to delete
+    );
+   console.log("Delete success!!")
+    
+  } catch (error) {
+    console.log(error, "delete error!!")
+  }
+}
+
+async function filterPerAnswered(answered) {
+  console.log(answered)
+  try {
+    const rows = await db.getAllAsync(
+      `SELECT * FROM prayers WHERE answered = ?`,
+      [answered]
+    );
+
+    return rows;
+  } catch (error) {
+    console.log(error, "No filter");
+  }
+}
+
+export { 
+  setPrayerSql,
+  insertDataSql,
+  getDataSql,
+  setAnsweredSql,
+  deletePrayerSql,
+  filterPerAnswered
+};
