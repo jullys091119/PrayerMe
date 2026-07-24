@@ -11,17 +11,15 @@ import { Icon } from "./ui/icon";
 
 function Prayers() {
   const { setAnsweredSql, data, icons, getDataSql, setData } =
-   useContext(AppContext);
-   const handleSetAnswered = async (answered, id) => {
-   await setAnsweredSql(id, answered);
-   await loadData()
-};
-
+    useContext(AppContext);
+  const handleSetAnswered = async (answered, id) => {
+    await setAnsweredSql(id, answered);
+    await loadData();
+  };
 
   const loadData = async () => {
     const newData = await getDataSql();
     setData(newData);
-    console.log(newData, "daa");
   };
 
   return (
@@ -33,6 +31,7 @@ function Prayers() {
         getItem={(data, index) => data[index]}
         getItemCount={(data) => data?.length}
         renderItem={({ item }) => {
+          console.log(item, "item");
           const IconComponent = icons[item.iconName];
 
           return (
@@ -49,12 +48,12 @@ function Prayers() {
                   className="mt-2"
                 />
               </HStack>
+              <HStack className="flex-col">
+                <Text style={{ color: item.color }}>{item.date}</Text>
+              </HStack>
 
-              <HStack className="border-1">
-                <Text className="text-white max-w-[300]">
-                  {item.prayer}
-                </Text>
-
+              <HStack className="">
+                <Text className="text-white max-w-[300]">{item.prayer}</Text>
                 <Switch
                   size="md"
                   isDisabled={false}
@@ -67,10 +66,7 @@ function Prayers() {
                   ios_backgroundColor="#d4d4d4"
                   value={item.answered === 1}
                   onToggle={() => {
-                    handleSetAnswered(
-                      item.answered === 1 ? 0 : 1,
-                      item.id
-                    );
+                    handleSetAnswered(item.answered === 1 ? 0 : 1, item.id);
                   }}
                 />
               </HStack>

@@ -119,13 +119,14 @@ const AppProvider = ({ children }) => {
   const [portal, setPortal] = useState(false);
   const [prayer, setPrayer] = useState(currentPrayer);
   const [data, setData] = useState([]);
+  const [date, setDate] = useState("")
 
   async function getDataAsyncSql() {
-    console.log("iniciando carga");
+   /* /*  console.log("iniciando carga"); */
 
     await setPrayerSql();
 
-    console.log("después de setPrayerSql");
+  /*   console.log("después de setPrayerSql"); */ 
 
     const data = await getDataSql();
 
@@ -134,8 +135,38 @@ const AppProvider = ({ children }) => {
     setData(data);
   }
 
+
+  function  setDatePrayer () {
+   const date  =  new Date()
+   const  currentDate = date.getFullYear();
+   const  currentDay = date.getDay();
+   const currentMonth = date.getMonth()
+   
+   const  months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre", 
+    "Noviembre",
+    "Diciembre"
+   ]
+
+   setDate(`${currentDay} de ${months[currentMonth]} del ${currentDate}`)
+   
+  }
+
+  
+
+
   useEffect(() => {
     getDataAsyncSql();
+    setDatePrayer()
   }, []);
   return (
     <AppContext.Provider
@@ -152,6 +183,8 @@ const AppProvider = ({ children }) => {
         getDataSql,
         data,
         setData,
+        setDate,
+        date
       }}
     >
       {children}
