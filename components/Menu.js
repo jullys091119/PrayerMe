@@ -16,8 +16,8 @@ import {MenuIcon} from "lucide-react-native"
 
 function MenuOptions() {
   const [selected, setSelected] = React.useState(new Set([]));
-    const  { setPortal } = useContext(AppContext);
-   
+    const  { setPortal, setVerse } = useContext(AppContext);
+
   return (
     <Menu
       placement="bottom left"
@@ -45,8 +45,17 @@ function MenuOptions() {
       >
         <Icon as={SettingsIcon} size="sm" className="mr-2" />
         <MenuItemLabel size="sm">Agregar Oraciòn</MenuItemLabel>
+        
       </MenuItem>
-      
+       <MenuItem
+        onPress={()=>{setVerse(true)}}
+        key="verse setting"
+        textValue="Account Settings"
+        className="p-2 web:min-w-[294px] min-w-[225px]"
+      >
+        <Icon as={SettingsIcon} size="sm" className="mr-2" />
+        <MenuItemLabel size="sm">Agregar Texto bíblico</MenuItemLabel>
+      </MenuItem>
     </Menu>
   );
 }
