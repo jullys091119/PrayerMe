@@ -1,5 +1,14 @@
 import React, { createContext, useEffect, useState } from "react";
-import { setPrayerSql, insertDataSql, getDataSql, setAnsweredSql, deletePrayerSql, filterPerAnswered  } from "@/sql";
+import {
+  setPrayerSql,
+  insertDataSql,
+  getDataSql,
+  setAnsweredSql,
+  deletePrayerSql,
+  filterPerAnswered,
+  insertVerseSql,
+  getVerseSql,
+} from "@/sql";
 
 import {
   Smile,
@@ -119,60 +128,60 @@ const AppProvider = ({ children }) => {
   const [portal, setPortal] = useState(false);
   const [prayer, setPrayer] = useState(currentPrayer);
   const [data, setData] = useState([]);
-  const [date, setDate] = useState("")
+  const [date, setDate] = useState("");
+  const [verse, setVerse] = useState(false);
+  const [verseData, setVerseData] = useState([]);
 
   async function getDataAsyncSql() {
-   /* /*  console.log("iniciando carga"); */
-
     await setPrayerSql();
 
-  /*   console.log("después de setPrayerSql"); */ 
+    /*   console.log("después de setPrayerSql"); */
 
     const data = await getDataSql();
 
-    console.log("datos cargados:", data);
+    //console.log("datos cargados:", data);
+    const verses = await getVerseSql();
+    console.log(verses)
 
     setData(data);
+    setVerseData(verses)
   }
 
-
-  async function getDataFilteredSql (answered) {
-    const data   =  await  filterPerAnswered(answered);
+  async function getDataFilteredSql(answered) {
+    const data = await filterPerAnswered(answered);
     return data;
-   //
+    //
   }
 
-  function  setDatePrayer () {
-   const date  =  new Date()
-   const  currentDate = date.getFullYear();
-   const  currentDay = date.getDay();
-   const currentMonth = date.getMonth()
-   
-   const  months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre", 
-    "Noviembre",
-    "Diciembre"
-   ]
+  function setDatePrayer() {
+    const date = new Date();
+    const currentDate = date.getFullYear();
+    const currentDay = date.getDay();
+    const currentMonth = date.getMonth();
 
-   setDate(`${currentDay} de ${months[currentMonth]} del ${currentDate}`)
-   
+    const months = [
+      "Enero",
+      "Febrero",
+      "Marzo",   
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
+    ];
+
+    setDate(`${currentDay} de ${months[currentMonth]} del ${currentDate}`);
   }
-
-  
 
 
   useEffect(() => {
     getDataAsyncSql();
-    setDatePrayer()
+    setDatePrayer();
+  
   }, []);
   return (
     <AppContext.Provider
@@ -185,6 +194,7 @@ const AppProvider = ({ children }) => {
         icons,
         setPrayerSql,
         insertDataSql,
+        insertVerseSql,
         setAnsweredSql,
         getDataSql,
         data,
@@ -194,6 +204,9 @@ const AppProvider = ({ children }) => {
         deletePrayerSql,
         filterPerAnswered,
         getDataFilteredSql,
+        setVerse,
+        verse,
+        verseData,
       }}
     >
       {children}
